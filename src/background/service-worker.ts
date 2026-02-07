@@ -33,6 +33,10 @@ async function handleMessage(message: { type: string; payload?: unknown }) {
       return apiManager.analyzeArticle(message.payload as { text: string; url?: string });
     case 'GET_CACHED_ANALYSIS':
       return apiManager.getCachedAnalysis(message.payload as string);
+    case 'GENERATE_VIDEO':
+      return apiManager.generateArticleVideo(
+        message.payload as { title: string; excerpt: string; reasoning: string }
+      );
     default:
       throw new Error(`Unknown message type: ${message.type}`);
   }

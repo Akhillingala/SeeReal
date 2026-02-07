@@ -27,10 +27,15 @@ interface AnalysisState {
 
 type ViewMode = 'minimized' | 'expanded';
 
+type VideoState = 'idle' | 'generating' | 'success' | 'error';
+
 export function Overlay2D() {
   const [viewMode, setViewMode] = useState<ViewMode>('minimized');
   const [analysis, setAnalysis] = useState<AnalysisState>({ status: 'idle' });
   const [article, setArticle] = useState<{ title: string; url: string } | null>(null);
+  const [videoState, setVideoState] = useState<VideoState>('idle');
+  const [videoUrl, setVideoUrl] = useState<string | null>(null);
+  const [videoError, setVideoError] = useState<string | null>(null);
 
   const runAnalysis = useCallback(async () => {
     const extracted = extractArticle();
@@ -89,6 +94,51 @@ export function Overlay2D() {
     setViewMode('expanded');
     if (analysis.status === 'idle') runAnalysis();
   };
+
+  const runGenerateVideo = useCallback(async () => {
+    const extracted = extractArticle();
+    if (!extracted || analysis.status !== 'success' || !analysis.bias) {
+      setVideoError('Analyze the article first.');
+      setVideoState('error');
+      return;
+    }
+    setVideoState('generating');
+    setVideoError(null);
+    if (videoUrl) {
+      URL.revokeObjectURL(videoUrl);
+      setVideoUrl(null);
+    }
+    try {
+      const response = await chrome.runtime.sendMessage({
+        type: 'GENERATE_VIDEO',
+        payload: {
+          title: extracted.title,
+          excerpt: extracted.excerpt ?? extracted.text.slice(0, 300),
+          reasoning: analysis.bias.reasoning,
+        },
+      });
+      if (response === undefined) {
+        throw new Error('Extension did not respond. Try refreshing the page.');
+      }
+      if (response?.error) throw new Error(response.error);
+      const { videoBase64, mimeType } = response as { videoBase64: string; mimeType: string };
+      if (!videoBase64) throw new Error('No video data returned.');
+      const binary = Uint8Array.from(atob(videoBase64), (c) => c.charCodeAt(0));
+      const blob = new Blob([binary], { type: mimeType || 'video/mp4' });
+      const url = URL.createObjectURL(blob);
+      setVideoUrl(url);
+      setVideoState('success');
+    } catch (err) {
+      setVideoError(err instanceof Error ? err.message : 'Video generation failed.');
+      setVideoState('error');
+    }
+  }, [analysis.status, analysis.bias, videoUrl]);
+
+  useEffect(() => {
+    return () => {
+      if (videoUrl) URL.revokeObjectURL(videoUrl);
+    };
+  }, [videoUrl]);
 
   return (
     <div className="creal-overlay fixed bottom-6 right-6 z-[2147483647] font-sans">
@@ -195,15 +245,52 @@ export function Overlay2D() {
               )}
             </div>
 
+            {/* Video section: player when success, or inline error */}
+            {videoState === 'success' && videoUrl && (
+              <div className="shrink-0 border-t border-white/20 px-6 py-4 bg-white/[0.03]">
+                <p className="text-xs font-medium uppercase tracking-wider text-white/50 mb-2">
+                  Short clip (&lt;15s)
+                </p>
+                <video
+                  src={videoUrl}
+                  controls
+                  className="w-full max-h-48 rounded-lg border border-white/10 bg-black/50"
+                  preload="metadata"
+                />
+                <a
+                  href={videoUrl}
+                  download="creal-article-clip.mp4"
+                  className="mt-2 inline-block text-sm text-creal-accent hover:underline"
+                >
+                  Download clip
+                </a>
+              </div>
+            )}
+            {videoState === 'error' && videoError && (
+              <div className="shrink-0 border-t border-white/20 px-6 py-2 bg-creal-danger/10">
+                <p className="text-sm text-creal-danger">{videoError}</p>
+              </div>
+            )}
+
             {/* Footer with Generate video */}
             <div className="shrink-0 border-t border-white/20 px-6 py-4 flex items-center justify-between bg-white/[0.03]">
               <p className="text-sm text-white/50">Article insights · CReal</p>
               <button
                 type="button"
-                onClick={() => {}}
-                className="rounded-xl bg-white/25 px-6 py-3 text-sm font-semibold text-white hover:bg-white/35 transition-colors border border-white/30"
+                onClick={runGenerateVideo}
+                disabled={videoState === 'generating'}
+                title={
+                  analysis.status !== 'success'
+                    ? 'Analyze the article first to generate a short clip'
+                    : undefined
+                }
+                className="rounded-xl bg-white/25 px-6 py-3 text-sm font-semibold text-white hover:bg-white/35 transition-colors border border-white/30 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Generate video
+                {videoState === 'generating'
+                  ? 'Generating clip…'
+                  : analysis.status !== 'success'
+                    ? 'Generate video (analyze first)'
+                    : 'Generate video'}
               </button>
             </div>
           </motion.div>

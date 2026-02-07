@@ -13,10 +13,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   ApiManager: () => (/* binding */ ApiManager)
 /* harmony export */ });
 /* harmony import */ var _lib_analyzers_bias_detector__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../lib/analyzers/bias-detector */ "./src/lib/analyzers/bias-detector.ts");
+/* harmony import */ var _lib_video_video_prompt__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../lib/video/video-prompt */ "./src/lib/video/video-prompt.ts");
+/* harmony import */ var _lib_video_veo_client__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../lib/video/veo-client */ "./src/lib/video/veo-client.ts");
 /**
  * CReal - API Manager
- * Coordinates AI analysis requests and caching
+ * Coordinates AI analysis requests, caching, and video generation
  */
+
+
 
 const biasAnalyzer = new _lib_analyzers_bias_detector__WEBPACK_IMPORTED_MODULE_0__.BiasAnalyzer();
 const cache = new Map();
@@ -59,6 +63,16 @@ class ApiManager {
         }
         return null;
     }
+    /** Generate a short (<15s) video clip summarizing the article. Uses same Gemini API key. */
+    async generateArticleVideo(payload) {
+        const apiKey = await biasAnalyzer.getApiKey();
+        if (!apiKey) {
+            throw new Error('No API key. Add your Gemini API key in the extension popup.');
+        }
+        const context = [payload.excerpt, payload.reasoning].filter(Boolean).join('\n\n');
+        const prompt = await (0,_lib_video_video_prompt__WEBPACK_IMPORTED_MODULE_1__.generateVideoPrompt)(apiKey, payload.title, context);
+        return (0,_lib_video_veo_client__WEBPACK_IMPORTED_MODULE_2__.generateVideo)(apiKey, prompt);
+    }
 }
 
 
@@ -100,6 +114,7 @@ class BiasAnalyzer {
     constructor() {
         this.genAI = null;
     }
+    /** Used by ApiManager for video generation; same key as bias analysis. */
     async getApiKey() {
         try {
             const stored = await chrome.storage.local.get('geminiApiKey');
@@ -107,7 +122,7 @@ class BiasAnalyzer {
             if (fromStorage && typeof fromStorage === 'string')
                 return fromStorage;
             // Fallback: key from .env.local at build time (run: GEMINI_API_KEY=xxx npm run build)
-            const fromEnv =  true ? "AIzaSyDnxOmq0sGW1sDvXTM2hDxUW5kYxkzsnJo" : 0;
+            const fromEnv =  true ? "AIzaSyDmG32oQMw3iY67H_rM1X_HWmlQWWzcoHI" : 0;
             return fromEnv?.trim() || null;
         }
         catch {
@@ -171,6 +186,193 @@ class BiasAnalyzer {
             reasoning: 'AI analysis unavailable. Add GEMINI_API_KEY to enable.',
         };
     }
+}
+
+
+/***/ },
+
+/***/ "./src/lib/video/veo-client.ts"
+/*!*************************************!*\
+  !*** ./src/lib/video/veo-client.ts ***!
+  \*************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   generateVideo: () => (/* binding */ generateVideo)
+/* harmony export */ });
+/**
+ * CReal - Veo video generation client (REST)
+ * Generates short (<15s) clips via Google Veo 3.1 using the Gemini API.
+ * Uses 6-second duration for a quick, focused summary clip.
+ */
+const BASE_URL = 'https://generativelanguage.googleapis.com/v1beta';
+const MODEL = 'veo-3.1-generate-preview';
+const POLL_INTERVAL_MS = 8000;
+const MAX_POLL_ATTEMPTS = 30; // ~4 minutes max
+function authHeaders(apiKey) {
+    return {
+        'Content-Type': 'application/json',
+        'x-goog-api-key': apiKey,
+    };
+}
+/**
+ * Start a long-running video generation job. Returns operation name.
+ */
+async function startGeneration(apiKey, prompt) {
+    const url = `${BASE_URL}/models/${MODEL}:predictLongRunning`;
+    const body = {
+        instances: [{ prompt }],
+        parameters: {
+            durationSeconds: '6',
+            aspectRatio: '16:9',
+            resolution: '720p',
+        },
+    };
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: authHeaders(apiKey),
+        body: JSON.stringify(body),
+    });
+    if (!res.ok) {
+        const errText = await res.text();
+        throw new Error(`Veo start failed: ${res.status} ${errText}`);
+    }
+    const data = (await res.json());
+    const name = data?.name;
+    if (!name || typeof name !== 'string') {
+        throw new Error('Veo start: missing operation name in response');
+    }
+    return name;
+}
+/**
+ * Poll operation until done. Returns the raw operation response when done.
+ */
+async function pollOperation(apiKey, operationName) {
+    const url = operationName.startsWith('http')
+        ? operationName
+        : `${BASE_URL}/${operationName}`;
+    for (let i = 0; i < MAX_POLL_ATTEMPTS; i++) {
+        const res = await fetch(url, {
+            method: 'GET',
+            headers: authHeaders(apiKey),
+        });
+        if (!res.ok) {
+            throw new Error(`Veo poll failed: ${res.status} ${await res.text()}`);
+        }
+        const data = (await res.json());
+        if (data.error?.message) {
+            throw new Error(`Veo error: ${data.error.message}`);
+        }
+        if (data.done) {
+            return data.response ?? {};
+        }
+        await new Promise((r) => setTimeout(r, POLL_INTERVAL_MS));
+    }
+    throw new Error('Veo generation timed out');
+}
+/**
+ * Extract video URI from operation response and download video bytes.
+ * Response path from docs: response.generateVideoResponse.generatedSamples[0].video.uri
+ */
+function getVideoUri(response) {
+    const gen = response?.generateVideoResponse;
+    const samples = gen?.generatedSamples;
+    const first = samples?.[0];
+    const video = first?.video;
+    const uri = video?.uri;
+    return typeof uri === 'string' ? uri : null;
+}
+/**
+ * Download video from URI (with API key for auth) and return as base64.
+ */
+async function downloadVideo(apiKey, uri) {
+    const res = await fetch(uri, {
+        headers: { 'x-goog-api-key': apiKey },
+    });
+    if (!res.ok) {
+        throw new Error(`Veo download failed: ${res.status}`);
+    }
+    const blob = await res.blob();
+    const mimeType = blob.type || 'video/mp4';
+    const buf = await blob.arrayBuffer();
+    const bytes = new Uint8Array(buf);
+    let binary = '';
+    for (let i = 0; i < bytes.length; i++) {
+        binary += String.fromCharCode(bytes[i]);
+    }
+    const base64 = typeof btoa !== 'undefined' ? btoa(binary) : Buffer.from(bytes).toString('base64');
+    return { base64, mimeType };
+}
+/**
+ * Generate a short (6 second) video from a text prompt. Returns base64-encoded video.
+ */
+async function generateVideo(apiKey, prompt) {
+    const operationName = await startGeneration(apiKey, prompt);
+    const response = await pollOperation(apiKey, operationName);
+    const uri = getVideoUri(response);
+    if (!uri) {
+        throw new Error('Veo response missing video URI');
+    }
+    const { base64, mimeType } = await downloadVideo(apiKey, uri);
+    return { videoBase64: base64, mimeType };
+}
+
+
+/***/ },
+
+/***/ "./src/lib/video/video-prompt.ts"
+/*!***************************************!*\
+  !*** ./src/lib/video/video-prompt.ts ***!
+  \***************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   generateVideoPrompt: () => (/* binding */ generateVideoPrompt)
+/* harmony export */ });
+/* harmony import */ var _google_generative_ai__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @google/generative-ai */ "./node_modules/@google/generative-ai/dist/index.mjs");
+/**
+ * CReal - Video prompt generator
+ * Uses Gemini to turn article context into a short, vivid prompt for a 6–8 second clip.
+ */
+
+const PROMPT = `You are writing a single video scene prompt for an AI video generator (e.g. Veo). The video will be very short (under 15 seconds) and must visually summarize the news article in one clear, cinematic moment.
+
+Given the article title and context below, output ONLY one short paragraph (2–4 sentences) that describes:
+- The main subject (people, place, or event) and one key action or moment.
+- Visual style: e.g. "cinematic", "documentary", "news broadcast style", "dramatic".
+- Setting and mood that match the article (e.g. "tense", "hopeful", "busy city", "quiet room").
+No meta-commentary. No "the video shows...". Write as a direct scene description for the video model.
+
+Article title: {{TITLE}}
+
+Context/summary: {{CONTEXT}}
+
+Video prompt:`;
+async function generateVideoPrompt(apiKey, title, context) {
+    const truncatedContext = context.slice(0, 2000);
+    const prompt = PROMPT.replace('{{TITLE}}', title).replace('{{CONTEXT}}', truncatedContext);
+    const genAI = new _google_generative_ai__WEBPACK_IMPORTED_MODULE_0__.GoogleGenerativeAI(apiKey);
+    const modelNames = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-2.5-flash-lite'];
+    let lastErr;
+    for (const modelName of modelNames) {
+        try {
+            const model = genAI.getGenerativeModel({ model: modelName });
+            const result = await model.generateContent(prompt);
+            const text = result.response.text()?.trim() ?? '';
+            if (text.length > 0)
+                return text;
+        }
+        catch (err) {
+            lastErr = err;
+            if (err?.message?.includes('API key not valid'))
+                break;
+        }
+    }
+    console.error('[CReal] Video prompt generation error:', lastErr);
+    // Fallback: simple prompt from title
+    return `Cinematic, documentary-style short clip about: ${title}. Clear, neutral visual summary.`;
 }
 
 
@@ -1758,6 +1960,8 @@ async function handleMessage(message) {
             return apiManager.analyzeArticle(message.payload);
         case 'GET_CACHED_ANALYSIS':
             return apiManager.getCachedAnalysis(message.payload);
+        case 'GENERATE_VIDEO':
+            return apiManager.generateArticleVideo(message.payload);
         default:
             throw new Error(`Unknown message type: ${message.type}`);
     }

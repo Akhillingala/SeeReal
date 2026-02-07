@@ -39,6 +39,7 @@ Article text:
 export class BiasAnalyzer {
   private genAI: GoogleGenerativeAI | null = null;
 
+  /** Used by ApiManager for video generation; same key as bias analysis. */
   async getApiKey(): Promise<string | null> {
     try {
       const stored = await chrome.storage.local.get('geminiApiKey');

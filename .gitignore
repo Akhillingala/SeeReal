@@ -1,0 +1,22 @@
+# Environment and secrets
+.env
+.env.local
+.env.*.local
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Keys / certs
+*.pem
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+*.log
+.idea/
+.vscode/
