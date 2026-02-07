@@ -6,7 +6,7 @@ import type { ExtractedArticle } from '../lib/utils/article-parser';
 type CitationFormat = 'APA' | 'MLA' | 'Chicago' | 'Harvard' | 'IEEE';
 
 interface CitationsViewProps {
-    article: Pick<ExtractedArticle, 'title' | 'url' | 'author' | 'date' | 'source' | 'publisher'>;
+    article: ExtractedArticle;
 }
 
 export function CitationsView({ article }: CitationsViewProps) {
@@ -37,8 +37,8 @@ export function CitationsView({ article }: CitationsViewProps) {
                         key={fmt}
                         onClick={() => setFormat(fmt)}
                         className={`whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${format === fmt
-                                ? 'bg-creal-accent text-black'
-                                : 'bg-white/5 text-white/60 hover:bg-white/10 hover:text-white/90'
+                            ? 'bg-seereal-accent text-black'
+                            : 'bg-white/5 text-white/60 hover:bg-white/10 hover:text-white/90'
                             }`}
                     >
                         {fmt}
@@ -65,8 +65,8 @@ export function CitationsView({ article }: CitationsViewProps) {
                     <button
                         onClick={handleCopy}
                         className={`flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold transition-all ${copied
-                                ? 'bg-green-500/20 text-green-400 border border-green-500/30'
-                                : 'bg-white/10 text-white hover:bg-white/20 border border-white/10'
+                            ? 'bg-green-500/20 text-green-400 border border-green-500/30'
+                            : 'bg-white/10 text-white hover:bg-white/20 border border-white/10'
                             }`}
                     >
                         {copied ? (

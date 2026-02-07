@@ -600,8 +600,8 @@ video {
 .left-1\\/2 {
   left: 50%;
 }
-.left-\\[12\\.5vw\\] {
-  left: 12.5vw;
+.left-\\[7\\.5vw\\] {
+  left: 7.5vw;
 }
 .right-1\\/2 {
   right: 50%;
@@ -615,8 +615,8 @@ video {
 .top-0 {
   top: 0px;
 }
-.top-\\[12\\.5vh\\] {
-  top: 12.5vh;
+.top-\\[7\\.5vh\\] {
+  top: 7.5vh;
 }
 .z-10 {
   z-index: 10;
@@ -630,6 +630,10 @@ video {
 .mx-4 {
   margin-left: 1rem;
   margin-right: 1rem;
+}
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
 }
 .-ml-2 {
   margin-left: -0.5rem;
@@ -654,6 +658,12 @@ video {
 }
 .mb-5 {
   margin-bottom: 1.25rem;
+}
+.mr-2 {
+  margin-right: 0.5rem;
+}
+.mt-0\\.5 {
+  margin-top: 0.125rem;
 }
 .mt-1 {
   margin-top: 0.25rem;
@@ -706,26 +716,38 @@ video {
 .h-16 {
   height: 4rem;
 }
+.h-2 {
+  height: 0.5rem;
+}
 .h-20 {
   height: 5rem;
-}
-.h-3 {
-  height: 0.75rem;
 }
 .h-3\\.5 {
   height: 0.875rem;
 }
+.h-32 {
+  height: 8rem;
+}
 .h-4 {
   height: 1rem;
+}
+.h-40 {
+  height: 10rem;
+}
+.h-6 {
+  height: 1.5rem;
 }
 .h-8 {
   height: 2rem;
 }
-.h-\\[75vh\\] {
-  height: 75vh;
+.h-\\[85vh\\] {
+  height: 85vh;
 }
 .h-full {
   height: 100%;
+}
+.h-px {
+  height: 1px;
 }
 .max-h-40 {
   max-height: 10rem;
@@ -738,6 +760,9 @@ video {
 }
 .max-h-\\[calc\\(80vh-80px\\)\\] {
   max-height: calc(80vh - 80px);
+}
+.max-h-full {
+  max-height: 100%;
 }
 .min-h-0 {
   min-height: 0px;
@@ -766,6 +791,9 @@ video {
 .w-4 {
   width: 1rem;
 }
+.w-6 {
+  width: 1.5rem;
+}
 .w-64 {
   width: 16rem;
 }
@@ -775,8 +803,14 @@ video {
 .w-96 {
   width: 24rem;
 }
-.w-\\[75vw\\] {
-  width: 75vw;
+.w-\\[280px\\] {
+  width: 280px;
+}
+.w-\\[85vw\\] {
+  width: 85vw;
+}
+.w-auto {
+  width: auto;
 }
 .w-full {
   width: 100%;
@@ -790,6 +824,9 @@ video {
 .max-w-lg {
   max-width: 32rem;
 }
+.max-w-md {
+  max-width: 28rem;
+}
 .max-w-sm {
   max-width: 24rem;
 }
@@ -798,6 +835,10 @@ video {
 }
 .shrink-0 {
   flex-shrink: 0;
+}
+.rotate-180 {
+  --tw-rotate: 180deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 @keyframes pulse {
 
@@ -879,13 +920,15 @@ video {
   margin-top: calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(0.75rem * var(--tw-space-y-reverse));
 }
+.space-y-4 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1rem * var(--tw-space-y-reverse));
+}
 .space-y-6 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-y-reverse: 0;
   margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
-}
-.self-start {
-  align-self: flex-start;
 }
 .overflow-hidden {
   overflow: hidden;
@@ -913,6 +956,9 @@ video {
 .break-words {
   overflow-wrap: break-word;
 }
+.rounded {
+  border-radius: 0.25rem;
+}
 .rounded-2xl {
   border-radius: 1rem;
 }
@@ -924,6 +970,9 @@ video {
 }
 .rounded-md {
   border-radius: 0.375rem;
+}
+.rounded-sm {
+  border-radius: 0.125rem;
 }
 .rounded-xl {
   border-radius: 0.75rem;
@@ -946,17 +995,20 @@ video {
 .border-dotted {
   border-style: dotted;
 }
-.border-creal-accent\\/30 {
-  border-color: rgb(0 217 255 / 0.3);
-}
-.border-creal-accent\\/40 {
-  border-color: rgb(0 217 255 / 0.4);
-}
-.border-creal-danger\\/50 {
-  border-color: rgb(255 0 85 / 0.5);
-}
 .border-green-500\\/30 {
   border-color: rgb(34 197 94 / 0.3);
+}
+.border-red-500\\/20 {
+  border-color: rgb(239 68 68 / 0.2);
+}
+.border-seereal-accent\\/30 {
+  border-color: rgb(255 215 0 / 0.3);
+}
+.border-seereal-accent\\/40 {
+  border-color: rgb(255 215 0 / 0.4);
+}
+.border-seereal-danger\\/50 {
+  border-color: rgb(255 0 85 / 0.5);
 }
 .border-white\\/10 {
   border-color: rgb(255 255 255 / 0.1);
@@ -976,13 +1028,19 @@ video {
 .border-white\\/5 {
   border-color: rgb(255 255 255 / 0.05);
 }
-.border-t-creal-accent {
+.border-t-seereal-accent {
   --tw-border-opacity: 1;
-  border-top-color: rgb(0 217 255 / var(--tw-border-opacity, 1));
+  border-top-color: rgb(255 215 0 / var(--tw-border-opacity, 1));
 }
 .bg-\\[\\#0a0a14\\] {
   --tw-bg-opacity: 1;
   background-color: rgb(10 10 20 / var(--tw-bg-opacity, 1));
+}
+.bg-black\\/20 {
+  background-color: rgb(0 0 0 / 0.2);
+}
+.bg-black\\/40 {
+  background-color: rgb(0 0 0 / 0.4);
 }
 .bg-black\\/50 {
   background-color: rgb(0 0 0 / 0.5);
@@ -999,30 +1057,28 @@ video {
 .bg-black\\/95 {
   background-color: rgb(0 0 0 / 0.95);
 }
-.bg-creal-accent {
-  --tw-bg-opacity: 1;
-  background-color: rgb(0 217 255 / var(--tw-bg-opacity, 1));
-}
-.bg-creal-accent\\/20 {
-  background-color: rgb(0 217 255 / 0.2);
-}
-.bg-creal-danger\\/10 {
-  background-color: rgb(255 0 85 / 0.1);
-}
-.bg-cyan-600 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(8 145 178 / var(--tw-bg-opacity, 1));
-}
-.bg-cyan-700 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(14 116 144 / var(--tw-bg-opacity, 1));
-}
 .bg-green-500\\/20 {
   background-color: rgb(34 197 94 / 0.2);
+}
+.bg-red-500\\/10 {
+  background-color: rgb(239 68 68 / 0.1);
 }
 .bg-red-600 {
   --tw-bg-opacity: 1;
   background-color: rgb(220 38 38 / var(--tw-bg-opacity, 1));
+}
+.bg-seereal-accent {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 215 0 / var(--tw-bg-opacity, 1));
+}
+.bg-seereal-accent\\/20 {
+  background-color: rgb(255 215 0 / 0.2);
+}
+.bg-seereal-accent\\/5 {
+  background-color: rgb(255 215 0 / 0.05);
+}
+.bg-seereal-danger\\/10 {
+  background-color: rgb(255 0 85 / 0.1);
 }
 .bg-white\\/10 {
   background-color: rgb(255 255 255 / 0.1);
@@ -1051,46 +1107,43 @@ video {
 .bg-white\\/\\[0\\.06\\] {
   background-color: rgb(255 255 255 / 0.06);
 }
+.bg-yellow-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(202 138 4 / var(--tw-bg-opacity, 1));
+}
 .bg-gradient-to-br {
   background-image: linear-gradient(to bottom right, var(--tw-gradient-stops));
 }
 .bg-gradient-to-r {
   background-image: linear-gradient(to right, var(--tw-gradient-stops));
 }
-.from-blue-500 {
-  --tw-gradient-from: #3b82f6 var(--tw-gradient-from-position);
-  --tw-gradient-to: rgb(59 130 246 / 0) var(--tw-gradient-to-position);
+.from-seereal-accent {
+  --tw-gradient-from: #FFD700 var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(255 215 0 / 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
-.from-creal-accent {
-  --tw-gradient-from: #00D9FF var(--tw-gradient-from-position);
-  --tw-gradient-to: rgb(0 217 255 / 0) var(--tw-gradient-to-position);
+.from-yellow-400 {
+  --tw-gradient-from: #facc15 var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(250 204 21 / 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
-.from-red-400 {
-  --tw-gradient-from: #f87171 var(--tw-gradient-from-position);
-  --tw-gradient-to: rgb(248 113 113 / 0) var(--tw-gradient-to-position);
+.from-yellow-600 {
+  --tw-gradient-from: #ca8a04 var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(202 138 4 / 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
-.from-white\\/\\[0\\.08\\] {
-  --tw-gradient-from: rgb(255 255 255 / 0.08) var(--tw-gradient-from-position);
-  --tw-gradient-to: rgb(255 255 255 / 0) var(--tw-gradient-to-position);
-  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+.to-yellow-400 {
+  --tw-gradient-to: #facc15 var(--tw-gradient-to-position);
 }
-.to-blue-400 {
-  --tw-gradient-to: #60a5fa var(--tw-gradient-to-position);
+.to-yellow-600 {
+  --tw-gradient-to: #ca8a04 var(--tw-gradient-to-position);
 }
-.to-cyan-600 {
-  --tw-gradient-to: #0891b2 var(--tw-gradient-to-position);
+.fill-white\\/40 {
+  fill: rgb(255 255 255 / 0.4);
 }
-.to-red-500 {
-  --tw-gradient-to: #ef4444 var(--tw-gradient-to-position);
-}
-.to-white\\/\\[0\\.04\\] {
-  --tw-gradient-to: rgb(255 255 255 / 0.04) var(--tw-gradient-to-position);
-}
-.fill-white\\/50 {
-  fill: rgb(255 255 255 / 0.5);
+.object-contain {
+  -o-object-fit: contain;
+     object-fit: contain;
 }
 .object-cover {
   -o-object-fit: cover;
@@ -1098,6 +1151,9 @@ video {
 }
 .p-1 {
   padding: 0.25rem;
+}
+.p-1\\.5 {
+  padding: 0.375rem;
 }
 .p-2 {
   padding: 0.5rem;
@@ -1116,6 +1172,14 @@ video {
 }
 .p-6 {
   padding: 1.5rem;
+}
+.px-0\\.5 {
+  padding-left: 0.125rem;
+  padding-right: 0.125rem;
+}
+.px-1\\.5 {
+  padding-left: 0.375rem;
+  padding-right: 0.375rem;
 }
 .px-2 {
   padding-left: 0.5rem;
@@ -1188,11 +1252,20 @@ video {
 .pb-1 {
   padding-bottom: 0.25rem;
 }
+.pb-20 {
+  padding-bottom: 5rem;
+}
+.pb-4 {
+  padding-bottom: 1rem;
+}
 .pr-1 {
   padding-right: 0.25rem;
 }
 .pr-2 {
   padding-right: 0.5rem;
+}
+.text-left {
+  text-align: left;
 }
 .text-center {
   text-align: center;
@@ -1212,6 +1285,9 @@ video {
 }
 .text-\\[11px\\] {
   font-size: 11px;
+}
+.text-\\[14px\\] {
+  font-size: 14px;
 }
 .text-\\[9px\\] {
   font-size: 9px;
@@ -1248,6 +1324,9 @@ video {
 .uppercase {
   text-transform: uppercase;
 }
+.italic {
+  font-style: italic;
+}
 .tabular-nums {
   --tw-numeric-spacing: tabular-nums;
   font-variant-numeric: var(--tw-ordinal) var(--tw-slashed-zero) var(--tw-numeric-figure) var(--tw-numeric-spacing) var(--tw-numeric-fraction);
@@ -1261,16 +1340,22 @@ video {
 .tracking-tight {
   letter-spacing: -0.025em;
 }
+.tracking-wide {
+  letter-spacing: 0.025em;
+}
 .tracking-wider {
   letter-spacing: 0.05em;
 }
-.text-\\[\\#00D9FF\\] {
-  --tw-text-opacity: 1;
-  color: rgb(0 217 255 / var(--tw-text-opacity, 1));
+.tracking-widest {
+  letter-spacing: 0.1em;
 }
 .text-\\[\\#FF0055\\] {
   --tw-text-opacity: 1;
   color: rgb(255 0 85 / var(--tw-text-opacity, 1));
+}
+.text-\\[\\#FFD700\\] {
+  --tw-text-opacity: 1;
+  color: rgb(255 215 0 / var(--tw-text-opacity, 1));
 }
 .text-black {
   --tw-text-opacity: 1;
@@ -1279,14 +1364,6 @@ video {
 .text-blue-400 {
   --tw-text-opacity: 1;
   color: rgb(96 165 250 / var(--tw-text-opacity, 1));
-}
-.text-creal-accent {
-  --tw-text-opacity: 1;
-  color: rgb(0 217 255 / var(--tw-text-opacity, 1));
-}
-.text-creal-danger {
-  --tw-text-opacity: 1;
-  color: rgb(255 0 85 / var(--tw-text-opacity, 1));
 }
 .text-gray-400 {
   --tw-text-opacity: 1;
@@ -1300,12 +1377,29 @@ video {
   --tw-text-opacity: 1;
   color: rgb(248 113 113 / var(--tw-text-opacity, 1));
 }
+.text-seereal-accent {
+  --tw-text-opacity: 1;
+  color: rgb(255 215 0 / var(--tw-text-opacity, 1));
+}
+.text-seereal-accent\\/60 {
+  color: rgb(255 215 0 / 0.6);
+}
+.text-seereal-accent\\/80 {
+  color: rgb(255 215 0 / 0.8);
+}
+.text-seereal-danger {
+  --tw-text-opacity: 1;
+  color: rgb(255 0 85 / var(--tw-text-opacity, 1));
+}
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
 }
 .text-white\\/20 {
   color: rgb(255 255 255 / 0.2);
+}
+.text-white\\/30 {
+  color: rgb(255 255 255 / 0.3);
 }
 .text-white\\/40 {
   color: rgb(255 255 255 / 0.4);
@@ -1324,9 +1418,6 @@ video {
 }
 .text-white\\/80 {
   color: rgb(255 255 255 / 0.8);
-}
-.text-white\\/85 {
-  color: rgb(255 255 255 / 0.85);
 }
 .text-white\\/90 {
   color: rgb(255 255 255 / 0.9);
@@ -1357,7 +1448,7 @@ video {
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 .shadow-neon {
-  --tw-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
+  --tw-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
   --tw-shadow-colored: 0 0 20px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
@@ -1408,57 +1499,92 @@ video {
   transition-duration: 200ms;
 }
 
-/* CReal overlay - isolated styling */
-.creal-overlay {
+/* SeeReal overlay - isolated styling */
+.seereal-overlay {
   font-family: 'Inter', system-ui, sans-serif;
   box-sizing: border-box;
 }
-.creal-overlay * {
+
+.seereal-overlay * {
   box-sizing: border-box;
 }
 
-.creal-card {
+.seereal-card {
   font-family: 'Inter', system-ui, sans-serif;
 }
 
-.creal-btn-minimize {
+.seereal-btn-minimize {
   font-family: 'Inter', system-ui, sans-serif;
   cursor: pointer;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
-.creal-btn-minimize:hover {
+
+.seereal-btn-minimize:hover {
   transform: scale(1.22);
-  box-shadow: 0 0 28px rgba(0, 217, 255, 0.45);
+  box-shadow: 0 0 28px rgba(255, 215, 0, 0.45);
 }
 
-.creal-hover-btn {
+.seereal-hover-btn {
   transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
 }
-.creal-hover-btn:hover:not(:disabled) {
+
+.seereal-hover-btn:hover:not(:disabled) {
   transform: scale(1.05);
 }
 
-.creal-metric-row:hover {
+.seereal-metric-row:hover {
   transform: scale(1.02);
   background-color: rgba(255, 255, 255, 0.08);
 }
 
-.hover\\:border-creal-accent\\/50:hover {
-  border-color: rgb(0 217 255 / 0.5);
+.scrollbar-custom::-webkit-scrollbar {
+  width: 5px;
 }
 
-.hover\\:border-white\\/60:hover {
-  border-color: rgb(255 255 255 / 0.6);
+.scrollbar-custom::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
 }
 
-.hover\\:bg-cyan-500:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(6 182 212 / var(--tw-bg-opacity, 1));
+.scrollbar-custom::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
 }
 
-.hover\\:bg-cyan-600:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(8 145 178 / var(--tw-bg-opacity, 1));
+.scrollbar-custom::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.placeholder\\:text-white\\/30::-moz-placeholder {
+  color: rgb(255 255 255 / 0.3);
+}
+
+.placeholder\\:text-white\\/30::placeholder {
+  color: rgb(255 255 255 / 0.3);
+}
+
+.last\\:border-0:last-child {
+  border-width: 0px;
+}
+
+.last\\:pb-0:last-child {
+  padding-bottom: 0px;
+}
+
+.hover\\:border-seereal-accent\\/50:hover {
+  border-color: rgb(255 215 0 / 0.5);
+}
+
+.hover\\:border-white\\/20:hover {
+  border-color: rgb(255 255 255 / 0.2);
+}
+
+.hover\\:border-white\\/40:hover {
+  border-color: rgb(255 255 255 / 0.4);
+}
+
+.hover\\:bg-red-400\\/10:hover {
+  background-color: rgb(248 113 113 / 0.1);
 }
 
 .hover\\:bg-red-500:hover {
@@ -1468,6 +1594,10 @@ video {
 
 .hover\\:bg-red-500\\/20:hover {
   background-color: rgb(239 68 68 / 0.2);
+}
+
+.hover\\:bg-seereal-accent\\/10:hover {
+  background-color: rgb(255 215 0 / 0.1);
 }
 
 .hover\\:bg-white\\/10:hover {
@@ -1486,12 +1616,21 @@ video {
   background-color: rgb(255 255 255 / 0.35);
 }
 
+.hover\\:bg-white\\/\\[0\\.04\\]:hover {
+  background-color: rgb(255 255 255 / 0.04);
+}
+
 .hover\\:bg-white\\/\\[0\\.08\\]:hover {
   background-color: rgb(255 255 255 / 0.08);
 }
 
 .hover\\:bg-white\\/\\[0\\.1\\]:hover {
   background-color: rgb(255 255 255 / 0.1);
+}
+
+.hover\\:bg-yellow-500:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(234 179 8 / var(--tw-bg-opacity, 1));
 }
 
 .hover\\:text-red-400:hover {
@@ -1512,14 +1651,18 @@ video {
   text-decoration-line: underline;
 }
 
-.focus\\:border-\\[\\#00D9FF\\]:focus {
+.focus\\:border-\\[\\#FFD700\\]:focus {
   --tw-border-opacity: 1;
-  border-color: rgb(0 217 255 / var(--tw-border-opacity, 1));
+  border-color: rgb(255 215 0 / var(--tw-border-opacity, 1));
 }
 
-.focus\\:border-creal-accent:focus {
+.focus\\:border-seereal-accent:focus {
   --tw-border-opacity: 1;
-  border-color: rgb(0 217 255 / var(--tw-border-opacity, 1));
+  border-color: rgb(255 215 0 / var(--tw-border-opacity, 1));
+}
+
+.focus\\:border-seereal-accent\\/50:focus {
+  border-color: rgb(255 215 0 / 0.5);
 }
 
 .focus\\:outline-none:focus {
@@ -1533,9 +1676,9 @@ video {
   box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
 }
 
-.focus\\:ring-creal-accent:focus {
+.focus\\:ring-seereal-accent:focus {
   --tw-ring-opacity: 1;
-  --tw-ring-color: rgb(0 217 255 / var(--tw-ring-opacity, 1));
+  --tw-ring-color: rgb(255 215 0 / var(--tw-ring-opacity, 1));
 }
 
 .disabled\\:cursor-default:disabled {
@@ -1558,9 +1701,9 @@ video {
   background-color: transparent;
 }
 
-.group:hover .group-hover\\:text-creal-accent {
+.group:hover .group-hover\\:text-seereal-accent {
   --tw-text-opacity: 1;
-  color: rgb(0 217 255 / var(--tw-text-opacity, 1));
+  color: rgb(255 215 0 / var(--tw-text-opacity, 1));
 }
 
 .group:hover .group-hover\\:opacity-100 {
@@ -1572,8 +1715,7 @@ video {
   .md\\:p-4 {
     padding: 1rem;
   }
-}
-`, "",{"version":3,"sources":["webpack://./src/styles/globals.css"],"names":[],"mappings":"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","sourcesContent":["@tailwind base;\n@tailwind components;\n@tailwind utilities;\n\n@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap');\n\n/* CReal overlay - isolated styling */\n.creal-overlay {\n  font-family: 'Inter', system-ui, sans-serif;\n  box-sizing: border-box;\n}\n.creal-overlay * {\n  box-sizing: border-box;\n}\n\n.creal-card {\n  font-family: 'Inter', system-ui, sans-serif;\n}\n\n.creal-btn-minimize {\n  font-family: 'Inter', system-ui, sans-serif;\n  cursor: pointer;\n  transition: transform 0.25s ease, box-shadow 0.25s ease;\n}\n.creal-btn-minimize:hover {\n  transform: scale(1.22);\n  box-shadow: 0 0 28px rgba(0, 217, 255, 0.45);\n}\n\n.creal-hover-btn {\n  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;\n}\n.creal-hover-btn:hover:not(:disabled) {\n  transform: scale(1.05);\n}\n\n.creal-metric-row:hover {\n  transform: scale(1.02);\n  background-color: rgba(255, 255, 255, 0.08);\n}\n"],"sourceRoot":""}]);
+}`, "",{"version":3,"sources":["webpack://./src/styles/globals.css"],"names":[],"mappings":"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","sourcesContent":["@tailwind base;\n@tailwind components;\n@tailwind utilities;\n\n@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap');\n\n/* SeeReal overlay - isolated styling */\n.seereal-overlay {\n  font-family: 'Inter', system-ui, sans-serif;\n  box-sizing: border-box;\n}\n\n.seereal-overlay * {\n  box-sizing: border-box;\n}\n\n.seereal-card {\n  font-family: 'Inter', system-ui, sans-serif;\n}\n\n.seereal-btn-minimize {\n  font-family: 'Inter', system-ui, sans-serif;\n  cursor: pointer;\n  transition: transform 0.25s ease, box-shadow 0.25s ease;\n}\n\n.seereal-btn-minimize:hover {\n  transform: scale(1.22);\n  box-shadow: 0 0 28px rgba(255, 215, 0, 0.45);\n}\n\n.seereal-hover-btn {\n  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;\n}\n\n.seereal-hover-btn:hover:not(:disabled) {\n  transform: scale(1.05);\n}\n\n.seereal-metric-row:hover {\n  transform: scale(1.02);\n  background-color: rgba(255, 255, 255, 0.08);\n}\n\n.scrollbar-custom::-webkit-scrollbar {\n  width: 5px;\n}\n\n.scrollbar-custom::-webkit-scrollbar-track {\n  background: rgba(255, 255, 255, 0.05);\n  border-radius: 10px;\n}\n\n.scrollbar-custom::-webkit-scrollbar-thumb {\n  background: rgba(255, 255, 255, 0.15);\n  border-radius: 10px;\n}\n\n.scrollbar-custom::-webkit-scrollbar-thumb:hover {\n  background: rgba(255, 255, 255, 0.25);\n}"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -36925,7 +37067,7 @@ function Popup() {
             const key = data[STORAGE_KEY] ?? '';
             setApiKey(key);
             // Key is configured if: saved in storage OR from .env.local at build time
-            const fromEnv =  true && "AIzaSyDmG32oQMw3iY67H_rM1X_HWmlQWWzcoHI"?.trim();
+            const fromEnv =  true && "AIzaSyDUfRGLABe4vRea9CHg6icJLegvMKqn1sM"?.trim();
             setHasKey(!!key.trim() || !!fromEnv);
         });
     }, []);
@@ -36964,9 +37106,9 @@ function Popup() {
         }
     };
     if (hasKey && !showKeyForm) {
-        return ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "w-96 bg-[#0a0a14] p-5 font-sans text-white", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("h1", { className: "mb-5 text-xl font-bold text-[#00D9FF]", children: "CReal" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("p", { className: "mb-5 text-base text-white/80", children: "Key configured \u2713" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { type: "button", onClick: handleAnalyze, className: "mb-4 w-full rounded-xl bg-cyan-700 py-3.5 text-base font-semibold text-white hover:bg-cyan-600 transition-colors", children: "Analyze this page" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { type: "button", onClick: () => setShowKeyForm(true), className: "w-full rounded-lg bg-white/10 py-2 text-sm text-white/70 hover:bg-white/20 hover:text-white transition-colors", children: "Change API key" })] }));
+        return ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "w-96 bg-[#0a0a14] p-5 font-sans text-white text-center", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("img", { src: chrome.runtime.getURL('logo.svg'), alt: "SeeReal", className: "mx-auto mb-5 h-16 w-auto object-contain" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("p", { className: "mb-5 text-base text-white/80", children: "Key configured \u2713" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { type: "button", onClick: handleAnalyze, className: "mb-4 w-full rounded-xl bg-yellow-600 py-3.5 text-base font-semibold text-white hover:bg-yellow-500 transition-colors", children: "Analyze this page" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { type: "button", onClick: () => setShowKeyForm(true), className: "w-full rounded-lg bg-white/10 py-2 text-sm text-white/70 hover:bg-white/20 hover:text-white transition-colors", children: "Change API key" })] }));
     }
-    return ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "w-96 bg-[#0a0a14] p-5 font-sans text-white", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("h1", { className: "mb-5 text-xl font-bold text-[#00D9FF]", children: "CReal" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("p", { className: "mb-4 text-base text-white/80", children: "Add your Gemini API key to enable bias analysis:" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("input", { type: "password", value: apiKey, onChange: (e) => setApiKey(e.target.value), placeholder: "AIza...", className: "mb-4 w-full rounded-lg border-2 border-white/20 bg-white/5 px-4 py-3 text-base text-white placeholder-white/40 focus:border-[#00D9FF] focus:outline-none" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { type: "button", onClick: handleSave, disabled: status === 'saving', className: "w-full rounded-xl bg-cyan-700 py-3.5 text-base font-semibold text-white hover:bg-cyan-600 disabled:opacity-70 transition-colors", children: status === 'saving' ? 'Saving...' : status === 'saved' ? 'Saved!' : 'Save API Key' }), status === 'error' && ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("p", { className: "mt-2 text-xs text-[#FF0055]", children: errorMsg })), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("p", { className: "mt-4 text-sm text-white/50", children: ["Get your key at", ' ', (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("a", { href: "https://aistudio.google.com/apikey", target: "_blank", rel: "noopener noreferrer", className: "text-[#00D9FF] hover:underline", children: "Google AI Studio" })] }), hasKey && ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { type: "button", onClick: () => setShowKeyForm(false), className: "mt-3 w-full rounded-lg bg-white/10 py-2 text-sm text-white/70 hover:bg-white/20 hover:text-white transition-colors", children: "Cancel" }))] }));
+    return ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "w-96 bg-[#0a0a14] p-5 font-sans text-white text-center", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("img", { src: chrome.runtime.getURL('logo.svg'), alt: "SeeReal", className: "mx-auto mb-5 h-16 w-auto object-contain" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("p", { className: "mb-4 text-base text-white/80", children: "Add your Gemini API key to enable bias analysis:" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("input", { type: "password", value: apiKey, onChange: (e) => setApiKey(e.target.value), placeholder: "AIza...", className: "mb-4 w-full rounded-lg border-2 border-white/20 bg-white/5 px-4 py-3 text-base text-white placeholder-white/40 focus:border-[#FFD700] focus:outline-none" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { type: "button", onClick: handleSave, disabled: status === 'saving', className: "w-full rounded-xl bg-yellow-600 py-3.5 text-base font-semibold text-white hover:bg-yellow-500 disabled:opacity-70 transition-colors", children: status === 'saving' ? 'Saving...' : status === 'saved' ? 'Saved!' : 'Save API Key' }), status === 'error' && ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("p", { className: "mt-2 text-xs text-[#FF0055]", children: errorMsg })), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("p", { className: "mt-4 text-sm text-white/50", children: ["Get your key at", ' ', (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("a", { href: "https://aistudio.google.com/apikey", target: "_blank", rel: "noopener noreferrer", className: "text-[#FFD700] hover:underline", children: "Google AI Studio" })] }), hasKey && ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { type: "button", onClick: () => setShowKeyForm(false), className: "mt-3 w-full rounded-lg bg-white/10 py-2 text-sm text-white/70 hover:bg-white/20 hover:text-white transition-colors", children: "Cancel" }))] }));
 }
 const root = document.getElementById('popup-root');
 if (root) {

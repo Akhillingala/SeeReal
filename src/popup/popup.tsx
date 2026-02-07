@@ -1,5 +1,5 @@
 /**
- * CReal - Extension Popup
+ * SeeReal - Extension Popup
  * API key configuration and quick actions
  */
 
@@ -65,13 +65,13 @@ function Popup() {
 
   if (hasKey && !showKeyForm) {
     return (
-      <div className="w-96 bg-[#0a0a14] p-5 font-sans text-white">
-        <h1 className="mb-5 text-xl font-bold text-[#00D9FF]">CReal</h1>
+      <div className="w-96 bg-[#0a0a14] p-5 font-sans text-white text-center">
+        <img src={chrome.runtime.getURL('logo.svg')} alt="SeeReal" className="mx-auto mb-5 h-16 w-auto object-contain" />
         <p className="mb-5 text-base text-white/80">Key configured ✓</p>
         <button
           type="button"
           onClick={handleAnalyze}
-          className="mb-4 w-full rounded-xl bg-cyan-700 py-3.5 text-base font-semibold text-white hover:bg-cyan-600 transition-colors"
+          className="mb-4 w-full rounded-xl bg-yellow-600 py-3.5 text-base font-semibold text-white hover:bg-yellow-500 transition-colors"
         >
           Analyze this page
         </button>
@@ -87,8 +87,8 @@ function Popup() {
   }
 
   return (
-    <div className="w-96 bg-[#0a0a14] p-5 font-sans text-white">
-      <h1 className="mb-5 text-xl font-bold text-[#00D9FF]">CReal</h1>
+    <div className="w-96 bg-[#0a0a14] p-5 font-sans text-white text-center">
+      <img src={chrome.runtime.getURL('logo.svg')} alt="SeeReal" className="mx-auto mb-5 h-16 w-auto object-contain" />
       <p className="mb-4 text-base text-white/80">
         Add your Gemini API key to enable bias analysis:
       </p>
@@ -97,13 +97,13 @@ function Popup() {
         value={apiKey}
         onChange={(e) => setApiKey(e.target.value)}
         placeholder="AIza..."
-        className="mb-4 w-full rounded-lg border-2 border-white/20 bg-white/5 px-4 py-3 text-base text-white placeholder-white/40 focus:border-[#00D9FF] focus:outline-none"
+        className="mb-4 w-full rounded-lg border-2 border-white/20 bg-white/5 px-4 py-3 text-base text-white placeholder-white/40 focus:border-[#FFD700] focus:outline-none"
       />
       <button
         type="button"
         onClick={handleSave}
         disabled={status === 'saving'}
-        className="w-full rounded-xl bg-cyan-700 py-3.5 text-base font-semibold text-white hover:bg-cyan-600 disabled:opacity-70 transition-colors"
+        className="w-full rounded-xl bg-yellow-600 py-3.5 text-base font-semibold text-white hover:bg-yellow-500 disabled:opacity-70 transition-colors"
       >
         {status === 'saving' ? 'Saving...' : status === 'saved' ? 'Saved!' : 'Save API Key'}
       </button>
@@ -116,7 +116,7 @@ function Popup() {
           href="https://aistudio.google.com/apikey"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-[#00D9FF] hover:underline"
+          className="text-[#FFD700] hover:underline"
         >
           Google AI Studio
         </a>

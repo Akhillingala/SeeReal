@@ -1,5 +1,5 @@
 /**
- * CReal - Bias Detector
+ * SeeReal - Bias Detector
  * Uses Gemini Flash for political bias analysis
  * API key: from popup (chrome.storage.local) or .env.local at build time
  */
@@ -30,7 +30,7 @@ const PROMPT = `Analyze this article and return metrics people care about. Retur
   "clarity": number (0 = confusing or opaque, 100 = very clear and well-structured),
   "tone_calm_urgent": number (-100 = very calm/measured, 100 = very urgent/alarming),
   "confidence": number (0-100, how confident you are in this analysis),
-  "reasoning": string (2-3 sentence explanation)
+  "reasoning": string (concise, punchy summary; max 2 sentences)
 }
 
 Article text:
@@ -94,7 +94,7 @@ export class BiasAnalyzer {
         if ((err as Error)?.message?.includes('API key not valid')) break; // Don't retry with bad key
       }
     }
-    console.error('[CReal] Bias analysis error:', lastErr);
+    console.error('[SeeReal] Bias analysis error:', lastErr);
     return this.getFallbackResult();
   }
 

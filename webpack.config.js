@@ -16,9 +16,9 @@ const geminiKey = (process.env.GEMINI_API_KEY || '').trim();
 module.exports = (env, argv) => {
   const isProd = argv.mode === 'production';
   if (!isProd && geminiKey) {
-    console.log('[CReal] GEMINI_API_KEY loaded from .env.local');
+    console.log('[SeeReal] GEMINI_API_KEY loaded from .env.local');
   } else if (!isProd && !geminiKey) {
-    console.warn('[CReal] No GEMINI_API_KEY in .env.local — add key in extension popup or set in .env.local');
+    console.warn('[SeeReal] No GEMINI_API_KEY in .env.local — add key in extension popup or set in .env.local');
   }
 
   return {
@@ -59,6 +59,7 @@ module.exports = (env, argv) => {
         patterns: [
           { from: 'manifest.json', to: 'manifest.json' },
           { from: 'public/icons', to: 'icons' },
+          { from: 'public/logo.svg', to: 'logo.svg' },
         ],
       }),
       new HtmlWebpackPlugin({

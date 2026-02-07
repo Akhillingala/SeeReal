@@ -4,12 +4,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        creal: {
+        seereal: {
           bg: 'rgba(10, 10, 20, 0.85)',
-          accent: '#00D9FF',
+          accent: '#FFD700', // Gold
           warning: '#FF6B00',
           danger: '#FF0055',
-          neutral: '#60A5FA',
+          neutral: '#FDE047', // Light Gold
         },
       },
       fontFamily: {
@@ -21,7 +21,7 @@ module.exports = {
         glass: '12px',
       },
       boxShadow: {
-        neon: '0 0 20px rgba(0, 217, 255, 0.3)',
+        neon: '0 0 20px rgba(255, 215, 0, 0.3)', // Gold shadow
         'neon-warning': '0 0 20px rgba(255, 107, 0, 0.3)',
         'neon-danger': '0 0 20px rgba(255, 0, 85, 0.3)',
       },

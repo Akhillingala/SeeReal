@@ -4,37 +4,58 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap');
 
-/* CReal overlay - isolated styling */
-.creal-overlay {
+/* SeeReal overlay - isolated styling */
+.seereal-overlay {
   font-family: 'Inter', system-ui, sans-serif;
   box-sizing: border-box;
 }
-.creal-overlay * {
+
+.seereal-overlay * {
   box-sizing: border-box;
 }
 
-.creal-card {
+.seereal-card {
   font-family: 'Inter', system-ui, sans-serif;
 }
 
-.creal-btn-minimize {
+.seereal-btn-minimize {
   font-family: 'Inter', system-ui, sans-serif;
   cursor: pointer;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
-.creal-btn-minimize:hover {
+
+.seereal-btn-minimize:hover {
   transform: scale(1.22);
-  box-shadow: 0 0 28px rgba(0, 217, 255, 0.45);
+  box-shadow: 0 0 28px rgba(255, 215, 0, 0.45);
 }
 
-.creal-hover-btn {
+.seereal-hover-btn {
   transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
 }
-.creal-hover-btn:hover:not(:disabled) {
+
+.seereal-hover-btn:hover:not(:disabled) {
   transform: scale(1.05);
 }
 
-.creal-metric-row:hover {
+.seereal-metric-row:hover {
   transform: scale(1.02);
   background-color: rgba(255, 255, 255, 0.08);
+}
+
+.scrollbar-custom::-webkit-scrollbar {
+  width: 5px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
 }

@@ -1,5 +1,5 @@
 /**
- * CReal - Article Parser
+ * SeeReal - Article Parser
  * Extracts article text and metadata from news pages
  */
 
@@ -121,9 +121,6 @@ function getAuthorImageUrl(): string | undefined {
     const src = (img as HTMLImageElement)?.src || img?.getAttribute('src');
     if (src && isImageUrl(src)) return toAbsoluteUrl(src);
   }
-
-  const ogImage = document.querySelector('meta[property="og:image"]')?.getAttribute('content');
-  if (ogImage) return toAbsoluteUrl(ogImage);
 
   return undefined;
 }

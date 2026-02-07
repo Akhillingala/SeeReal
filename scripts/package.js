@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Package CReal extension for distribution
+ * Package SeeReal extension for distribution
  * Output: dist/ directory ready for Chrome Web Store
  */
 
@@ -12,5 +12,5 @@ if (!fs.existsSync(distDir)) {
   console.error('Run npm run build first');
   process.exit(1);
 }
-console.log('[CReal] Extension packaged at dist/');
+console.log('[SeeReal] Extension packaged at dist/');
 console.log('Load unpacked extension from:', distDir);

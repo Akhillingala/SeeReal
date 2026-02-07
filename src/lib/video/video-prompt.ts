@@ -1,5 +1,5 @@
 /**
- * CReal - Video prompt generator
+ * SeeReal - Video prompt generator
  * Uses Gemini to turn article context into a prompt for a 10-second infographic/news-cartoon explainer.
  */
 
@@ -47,7 +47,7 @@ export async function generateVideoPrompt(
       if ((err as Error)?.message?.includes('API key not valid')) break;
     }
   }
-  console.error('[CReal] Video prompt generation error:', lastErr);
+  console.error('[SeeReal] Video prompt generation error:', lastErr);
   // Fallback: infographic-style prompt with narration from title
   return `Animated infographic, editorial cartoon style, 8 seconds. A narrator explains the story: context, what is happening, and why. Visuals show key facts. Narration in a calm news-explainer tone: "This story is about ${title.replace(/"/g, '')}. Here is what is going on and why it matters."`;
 }

@@ -1,5 +1,5 @@
 /**
- * CReal - Storage Type Definitions
+ * SeeReal - Storage Type Definitions
  * Shared interfaces for article history storage
  */
 
@@ -27,14 +27,32 @@ export interface ArticleMetadata {
     confidence: number;
 }
 
+export interface DebateCard {
+    tag: string;
+    cite: string;
+    body: string;
+    highlights: string[];
+}
+
+export interface DebateRecord {
+    id: string;
+    url: string;
+    articleTitle: string;
+    purpose: string;
+    cards: DebateCard[];
+    timestamp: number;
+}
+
 export interface StorageStats {
     count: number;
     oldestTimestamp: number | null;
     newestTimestamp: number | null;
     estimatedSizeBytes: number;
+    debateCount: number;
 }
 
 export interface StorageData {
     articles: Record<string, ArticleRecord>;
+    debateHistory: DebateRecord[];
     version: number; // For future schema migrations
 }

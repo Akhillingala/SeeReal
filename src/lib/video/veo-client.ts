@@ -1,5 +1,5 @@
 /**
- * CReal - Veo video generation client (REST)
+ * SeeReal - Veo video generation client (REST)
  * Generates short (<15s) clips via Google Veo 3.1 using the Gemini API.
  * Uses 8-second duration for an infographic/news-cartoon style explainer.
  */
@@ -85,90 +85,77 @@ async function pollOperation(
 }
 
 /**
- * Extract video URI from operation response. Tries multiple response shapes
- * (Gemini REST: response.generateVideoResponse.generatedSamples[0].video.uri,
- *  plus camelCase/snake_case and SDK-style variants.)
+ * Extract video URI from operation response.
+ * Uses a recursive search to find any property that looks like a video URI.
  */
-function getVideoUri(response: Record<string, unknown>): string | null {
+export function getVideoUri(response: Record<string, unknown>): string | null {
   if (!response || typeof response !== 'object') return null;
 
   // Debug: Log the full response structure
-  console.log('[CReal Veo] Full response:', JSON.stringify(response, null, 2));
+  console.log('[SeeReal Veo] Full response:', JSON.stringify(response, null, 2));
 
-  // Path 1: generateVideoResponse.generatedSamples[0].video.uri (Gemini REST, camelCase)
-  const gen = response.generateVideoResponse as Record<string, unknown> | undefined;
-  if (gen && typeof gen === 'object') {
-    console.log('[CReal Veo] Found generateVideoResponse:', JSON.stringify(gen, null, 2));
+  // Helper: check if a value is a valid video URI
+  const isVideoUri = (val: unknown): val is string => {
+    if (typeof val !== 'string') return false;
+    return val.startsWith('https://') && (
+      val.includes('.mp4') ||
+      val.includes('googlevideo.com') ||
+      val.includes('generativelanguage.googleapis.com')
+    );
+  };
 
-    const samples =
-      (gen.generatedSamples as unknown[] | undefined) ??
-      (gen.generated_samples as unknown[] | undefined);
+  // Helper: recursive search
+  const findUri = (obj: unknown, depth = 0): string | null => {
+    if (depth > 5 || !obj || typeof obj !== 'object') return null;
 
-    if (samples && Array.isArray(samples)) {
-      console.log('[CReal Veo] Found samples array, length:', samples.length);
-      const firstSample = samples[0] as Record<string, unknown> | undefined;
-      if (firstSample && typeof firstSample === 'object') {
-        console.log('[CReal Veo] First sample:', JSON.stringify(firstSample, null, 2));
+    // 1. Check current object for direct URI candidate
+    if ('uri' in obj && isVideoUri((obj as any).uri)) {
+      return (obj as any).uri;
+    }
+    if ('videoUri' in obj && isVideoUri((obj as any).videoUri)) {
+      return (obj as any).videoUri;
+    }
 
-        // Try direct video property
-        const video = firstSample.video as Record<string, unknown> | undefined;
-        if (video && typeof video === 'object') {
-          const uri = video.uri;
-          if (typeof uri === 'string') {
-            console.log('[CReal Veo] Found URI in video.uri:', uri);
-            return uri;
-          }
-        }
+    // 2. Check if this object IS the video object (has uri property but maybe not strictly valid check yet?)
+    // Let's rely on strict check above first.
 
-        // Try URI directly on sample
-        const directUri = firstSample.uri;
-        if (typeof directUri === 'string') {
-          console.log('[CReal Veo] Found URI directly on sample:', directUri);
-          return directUri;
+    // 3. Iterate keys
+    for (const key of Object.keys(obj)) {
+      const val = (obj as any)[key];
+
+      // If array, search elements
+      if (Array.isArray(val)) {
+        for (const item of val) {
+          const found = findUri(item, depth + 1);
+          if (found) return found;
         }
       }
-    }
-  }
-
-  // Path 2: generatedVideos[0].video.uri (SDK-style)
-  const generatedVideos = response.generatedVideos as unknown[] | undefined;
-  if (generatedVideos && Array.isArray(generatedVideos)) {
-    const firstGen = generatedVideos[0] as Record<string, unknown> | undefined;
-    const videoFromGen = firstGen?.video as Record<string, unknown> | undefined;
-    const uri2 = videoFromGen?.uri;
-    if (typeof uri2 === 'string') return uri2;
-  }
-
-  // Path 3: videos[0].gcsUri or videos[0].uri (Vertex REST-style)
-  const videos = response.videos as unknown[] | undefined;
-  if (videos && Array.isArray(videos)) {
-    const firstVideo = videos[0] as Record<string, unknown> | undefined;
-    const gcsUri = firstVideo?.gcsUri ?? firstVideo?.uri;
-    if (typeof gcsUri === 'string') return gcsUri;
-  }
-
-  // Path 4: Deep search inside generateVideoResponse for any array of items with .video.uri
-  if (gen && typeof gen === 'object') {
-    for (const key of Object.keys(gen)) {
-      const arr = gen[key] as unknown[] | undefined;
-      if (Array.isArray(arr) && arr.length > 0) {
-        const first = arr[0] as Record<string, unknown> | undefined;
-        if (first && typeof first === 'object') {
-          const video = first.video as Record<string, unknown> | undefined;
-          const u = video?.uri ?? first?.uri;
-          if (typeof u === 'string' && (u.startsWith('http') || u.startsWith('gs://')))
-            return u;
-        }
+      // If object, search recursively
+      else if (typeof val === 'object') {
+        const found = findUri(val, depth + 1);
+        if (found) return found;
       }
     }
-  }
+    return null;
+  };
 
-  // Path 5: Check if response itself has a uri field
-  const topLevelUri = response.uri;
-  if (typeof topLevelUri === 'string') return topLevelUri;
+  // Special case: check top-level known paths first for speed/correctness
+  // Path 1: generateVideoResponse.generatedSamples[0].video.uri
+  const gen = response.generateVideoResponse as any;
+  if (gen?.generatedSamples?.[0]?.video?.uri) return gen.generatedSamples[0].video.uri;
+  if (gen?.generated_samples?.[0]?.video?.uri) return gen.generated_samples[0].video.uri;
 
-  console.error('[CReal Veo] Could not find video URI in response. Available keys:', Object.keys(response));
-  return null;
+  // Path 2: generatedVideos[0].video.uri
+  const genVideos = response.generatedVideos as any;
+  if (genVideos?.[0]?.video?.uri) return genVideos[0].video.uri;
+
+  // Path 3: videos[0].uri
+  const videos = response.videos as any;
+  if (videos?.[0]?.uri) return videos[0].uri;
+
+  // Fallback: Deep recursive search
+  console.log('[SeeReal Veo] Standard paths failed. Starting deep recursive search...');
+  return findUri(response);
 }
 
 /**

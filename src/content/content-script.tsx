@@ -1,5 +1,5 @@
 /**
- * CReal - Content Script
+ * SeeReal - Content Script
  * Injected into news pages; extracts article content and injects overlay
  */
 
@@ -9,7 +9,7 @@ import { extractArticle } from '../lib/utils/article-parser';
 import { Overlay2D } from './Overlay2D';
 import '../styles/globals.css';
 
-const OVERLAY_ID = 'creal-overlay-root';
+const OVERLAY_ID = 'seereal-overlay-root';
 
 function init() {
   if (document.getElementById(OVERLAY_ID)) return;
@@ -30,7 +30,7 @@ if (document.readyState === 'loading') {
 
 chrome.runtime.onMessage.addListener((message) => {
   if (message.type === 'RUN_ANALYSIS') {
-    document.dispatchEvent(new CustomEvent('creal-run-analysis'));
+    document.dispatchEvent(new CustomEvent('seereal-run-analysis'));
   }
 });
 

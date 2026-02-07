@@ -1,5 +1,5 @@
 /**
- * CReal - Author Profile Component
+ * SeeReal - Author Profile Component
  * Displays author background information including bio, articles, and professional details
  */
 
@@ -106,14 +106,14 @@ export function AuthorProfile({ authorName, authorImageUrl, onClose }: AuthorPro
                     <div className="overflow-y-auto max-h-[calc(80vh-80px)] p-6">
                         {loading && (
                             <div className="flex flex-col items-center justify-center py-12">
-                                <div className="h-12 w-12 animate-spin rounded-full border-4 border-creal-accent/30 border-t-creal-accent mb-4" />
+                                <div className="h-12 w-12 animate-spin rounded-full border-4 border-seereal-accent/30 border-t-seereal-accent mb-4" />
                                 <p className="text-white/70">Loading author information...</p>
                             </div>
                         )}
 
                         {error && (
-                            <div className="rounded-xl border-2 border-creal-danger/50 bg-creal-danger/10 p-6">
-                                <p className="text-base font-medium text-creal-danger mb-2">{error}</p>
+                            <div className="rounded-xl border-2 border-seereal-danger/50 bg-seereal-danger/10 p-6">
+                                <p className="text-base font-medium text-seereal-danger mb-2">{error}</p>
                                 <button
                                     onClick={fetchAuthorInfo}
                                     className="mt-3 rounded-lg bg-white/25 px-4 py-2 text-sm font-medium text-white hover:bg-white/35 transition-colors"
@@ -134,7 +134,7 @@ export function AuthorProfile({ authorName, authorImageUrl, onClose }: AuthorPro
                                             className="h-20 w-20 shrink-0 rounded-full object-cover border-2 border-white/20 bg-white/10"
                                         />
                                     ) : (
-                                        <div className="h-20 w-20 shrink-0 rounded-full bg-gradient-to-br from-creal-accent to-cyan-600 flex items-center justify-center border-2 border-white/20">
+                                        <div className="h-20 w-20 shrink-0 rounded-full bg-gradient-to-br from-seereal-accent to-yellow-600 flex items-center justify-center border-2 border-white/20">
                                             <span className="text-2xl font-bold text-white">
                                                 {authorName.charAt(0).toUpperCase()}
                                             </span>
@@ -143,7 +143,7 @@ export function AuthorProfile({ authorName, authorImageUrl, onClose }: AuthorPro
                                     <div className="flex-1 min-w-0">
                                         <h3 className="text-2xl font-bold text-white mb-1">{authorName}</h3>
                                         {authorInfo.occupation && (
-                                            <p className="text-sm text-creal-accent font-medium mb-1">{authorInfo.occupation}</p>
+                                            <p className="text-sm text-seereal-accent font-medium mb-1">{authorInfo.occupation}</p>
                                         )}
                                         {authorInfo.age && (
                                             <p className="text-sm text-white/50">Age: {authorInfo.age}</p>

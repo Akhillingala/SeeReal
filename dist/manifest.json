@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "CReal - News Transparency",
+  "name": "SeeReal - News Transparency",
   "version": "0.1.0",
   "description": "Real-time, 3D-visualized transparency metrics for news articles",
   "permissions": [
@@ -18,8 +18,12 @@
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["content.js"],
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js"
+      ],
       "run_at": "document_idle"
     }
   ],
@@ -35,6 +39,16 @@
       "48": "icons/icon48.png",
       "128": "icons/icon128.png"
     },
-    "default_title": "CReal - Analyze this article"
-  }
+    "default_title": "SeeReal - Analyze this article"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "logo.svg"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ]
 }

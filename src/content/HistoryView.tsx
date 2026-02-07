@@ -1,5 +1,5 @@
 /**
- * CReal - History View Component
+ * SeeReal - History View Component
  * Displays previously analyzed articles with search and delete functionality
  */
 
@@ -28,7 +28,7 @@ export function HistoryView({ onSelectArticle, onClose }: HistoryViewProps) {
             const response = await chrome.runtime.sendMessage({ type: 'GET_ARTICLE_HISTORY' });
             setHistory(response || []);
         } catch (error) {
-            console.error('[CReal] Failed to load history:', error);
+            console.error('[SeeReal] Failed to load history:', error);
             setHistory([]);
         } finally {
             setLoading(false);
@@ -41,7 +41,7 @@ export function HistoryView({ onSelectArticle, onClose }: HistoryViewProps) {
             await chrome.runtime.sendMessage({ type: 'DELETE_ARTICLE', payload: url });
             setHistory((prev) => prev.filter((item) => item.url !== url));
         } catch (error) {
-            console.error('[CReal] Failed to delete article:', error);
+            console.error('[SeeReal] Failed to delete article:', error);
         }
     };
 
@@ -51,7 +51,7 @@ export function HistoryView({ onSelectArticle, onClose }: HistoryViewProps) {
             setHistory([]);
             setShowClearConfirm(false);
         } catch (error) {
-            console.error('[CReal] Failed to clear history:', error);
+            console.error('[SeeReal] Failed to clear history:', error);
         }
     };
 
@@ -108,7 +108,7 @@ export function HistoryView({ onSelectArticle, onClose }: HistoryViewProps) {
                         )}
                         <button
                             onClick={onClose}
-                            className="creal-hover-btn rounded-lg bg-white/15 px-3 py-2 text-sm text-white/90 hover:bg-white/25"
+                            className="seereal-hover-btn rounded-lg bg-white/15 px-3 py-2 text-sm text-white/90 hover:bg-white/25"
                         >
                             Back
                         </button>
@@ -121,7 +121,7 @@ export function HistoryView({ onSelectArticle, onClose }: HistoryViewProps) {
                     placeholder="Search by title, URL, author, or source..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full rounded-lg border border-white/20 bg-white/10 px-3 py-2 text-sm text-white placeholder-white/50 focus:border-creal-accent focus:outline-none focus:ring-1 focus:ring-creal-accent"
+                    className="w-full rounded-lg border border-white/20 bg-white/10 px-3 py-2 text-sm text-white placeholder-white/50 focus:border-seereal-accent focus:outline-none focus:ring-1 focus:ring-seereal-accent"
                 />
             </div>
 
@@ -169,7 +169,7 @@ export function HistoryView({ onSelectArticle, onClose }: HistoryViewProps) {
             <div className="flex-1 overflow-y-auto p-4">
                 {loading ? (
                     <div className="flex flex-col items-center justify-center py-10">
-                        <div className="h-12 w-12 animate-spin rounded-full border-4 border-creal-accent/30 border-t-creal-accent" />
+                        <div className="h-12 w-12 animate-spin rounded-full border-4 border-seereal-accent/30 border-t-seereal-accent" />
                         <p className="mt-4 text-sm text-white/70">Loading history...</p>
                     </div>
                 ) : filteredHistory.length === 0 ? (
@@ -203,7 +203,7 @@ export function HistoryView({ onSelectArticle, onClose }: HistoryViewProps) {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.03 }}
                                 onClick={() => onSelectArticle(item)}
-                                className="group cursor-pointer rounded-lg border border-white/10 bg-white/[0.06] p-3 transition-all hover:border-creal-accent/50 hover:bg-white/[0.1]"
+                                className="group cursor-pointer rounded-lg border border-white/10 bg-white/[0.06] p-3 transition-all hover:border-seereal-accent/50 hover:bg-white/[0.1]"
                             >
                                 <div className="flex items-start justify-between gap-3">
                                     <div className="min-w-0 flex-1">

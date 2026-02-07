@@ -1,5 +1,5 @@
 /**
- * CReal - Background Service Worker
+ * SeeReal - Background Service Worker
  * Handles API communication, persistent storage, and message passing between content scripts
  */
 
@@ -8,7 +8,7 @@ import { ApiManager } from './api-manager';
 const apiManager = new ApiManager();
 
 chrome.runtime.onInstalled.addListener(() => {
-  console.log('[CReal] Extension installed');
+  console.log('[SeeReal] Extension installed');
 });
 
 chrome.runtime.onMessage.addListener(
@@ -20,7 +20,7 @@ chrome.runtime.onMessage.addListener(
     handleMessage(message)
       .then(sendResponse)
       .catch((err) => {
-        console.error('[CReal] Message handler error:', err);
+        console.error('[SeeReal] Message handler error:', err);
         sendResponse({ error: String(err) });
       });
     return true; // Keep channel open for async response
@@ -51,6 +51,19 @@ async function handleMessage(message: { type: string; payload?: unknown }) {
       return apiManager.fetchAuthorInfo(
         message.payload as { authorName: string }
       );
+    case 'FETCH_RELATED_ARTICLES':
+      return apiManager.fetchRelatedArticles(
+        message.payload as { title: string; source?: string }
+      );
+    case 'GENERATE_DEBATE_CARDS':
+      return apiManager.generateDebateCards(
+        message.payload as { text: string; purpose: string; title: string; author?: string; source?: string; date?: string; url?: string }
+      );
+    case 'GET_DEBATE_HISTORY':
+      return apiManager.getDebateHistory();
+    case 'DELETE_DEBATE_RECORD':
+      await apiManager.deleteDebateRecord(message.payload as string);
+      return { success: true };
     default:
       throw new Error(`Unknown message type: ${message.type}`);
   }
