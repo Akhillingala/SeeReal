@@ -65,20 +65,20 @@ function Popup() {
 
   if (hasKey && !showKeyForm) {
     return (
-      <div className="w-80 bg-[#0a0a14] p-4 font-sans text-white">
-        <h1 className="mb-4 text-lg font-semibold text-[#00D9FF]">CReal</h1>
-        <p className="mb-4 text-sm text-white/80">Key configured ✓</p>
+      <div className="w-96 bg-[#0a0a14] p-5 font-sans text-white">
+        <h1 className="mb-5 text-xl font-bold text-[#00D9FF]">CReal</h1>
+        <p className="mb-5 text-base text-white/80">Key configured ✓</p>
         <button
           type="button"
           onClick={handleAnalyze}
-          className="mb-3 w-full rounded-lg bg-[#00D9FF] py-2 text-sm font-medium text-black hover:bg-[#00b8dd]"
+          className="mb-4 w-full rounded-xl bg-cyan-700 py-3.5 text-base font-semibold text-white hover:bg-cyan-600 transition-colors"
         >
           Analyze this page
         </button>
         <button
           type="button"
           onClick={() => setShowKeyForm(true)}
-          className="w-full text-xs text-white/50 hover:text-white/80"
+          className="w-full rounded-lg bg-white/10 py-2 text-sm text-white/70 hover:bg-white/20 hover:text-white transition-colors"
         >
           Change API key
         </button>
@@ -87,9 +87,9 @@ function Popup() {
   }
 
   return (
-    <div className="w-80 bg-[#0a0a14] p-4 font-sans text-white">
-      <h1 className="mb-4 text-lg font-semibold text-[#00D9FF]">CReal</h1>
-      <p className="mb-3 text-sm text-white/80">
+    <div className="w-96 bg-[#0a0a14] p-5 font-sans text-white">
+      <h1 className="mb-5 text-xl font-bold text-[#00D9FF]">CReal</h1>
+      <p className="mb-4 text-base text-white/80">
         Add your Gemini API key to enable bias analysis:
       </p>
       <input
@@ -97,20 +97,20 @@ function Popup() {
         value={apiKey}
         onChange={(e) => setApiKey(e.target.value)}
         placeholder="AIza..."
-        className="mb-3 w-full rounded border border-white/20 bg-white/5 px-3 py-2 text-sm text-white placeholder-white/40 focus:border-[#00D9FF] focus:outline-none"
+        className="mb-4 w-full rounded-lg border-2 border-white/20 bg-white/5 px-4 py-3 text-base text-white placeholder-white/40 focus:border-[#00D9FF] focus:outline-none"
       />
       <button
         type="button"
         onClick={handleSave}
         disabled={status === 'saving'}
-        className="w-full rounded-lg bg-[#00D9FF] py-2 text-sm font-medium text-black hover:bg-[#00b8dd] disabled:opacity-70"
+        className="w-full rounded-xl bg-cyan-700 py-3.5 text-base font-semibold text-white hover:bg-cyan-600 disabled:opacity-70 transition-colors"
       >
         {status === 'saving' ? 'Saving...' : status === 'saved' ? 'Saved!' : 'Save API Key'}
       </button>
       {status === 'error' && (
         <p className="mt-2 text-xs text-[#FF0055]">{errorMsg}</p>
       )}
-      <p className="mt-3 text-xs text-white/50">
+      <p className="mt-4 text-sm text-white/50">
         Get your key at{' '}
         <a
           href="https://aistudio.google.com/apikey"
@@ -125,7 +125,7 @@ function Popup() {
         <button
           type="button"
           onClick={() => setShowKeyForm(false)}
-          className="mt-2 w-full text-xs text-white/50 hover:text-white/80"
+          className="mt-3 w-full rounded-lg bg-white/10 py-2 text-sm text-white/70 hover:bg-white/20 hover:text-white transition-colors"
         >
           Cancel
         </button>

@@ -12,16 +12,23 @@ export interface BiasResult {
   left_right: number;
   auth_lib: number;
   nat_glob: number;
+  objectivity: number;
+  sensationalism: number;
+  clarity: number;
+  tone_calm_urgent: number;
   confidence: number;
   reasoning: string;
 }
 
-const PROMPT = `Analyze this article for political bias across three axes. 
-Return ONLY valid JSON with these exact keys (no markdown, no code blocks):
+const PROMPT = `Analyze this article and return metrics people care about. Return ONLY valid JSON with these exact keys (no markdown, no code blocks):
 {
   "left_right": number (-100 = far left, 0 = center, 100 = far right),
   "auth_lib": number (-100 = authoritarian, 0 = balanced, 100 = libertarian),
   "nat_glob": number (-100 = nationalist, 0 = balanced, 100 = globalist),
+  "objectivity": number (0 = very opinionated, 100 = very factual and neutral),
+  "sensationalism": number (0 = dry/restrained, 100 = highly sensational/clickbait),
+  "clarity": number (0 = confusing or opaque, 100 = very clear and well-structured),
+  "tone_calm_urgent": number (-100 = very calm/measured, 100 = very urgent/alarming),
   "confidence": number (0-100, how confident you are in this analysis),
   "reasoning": string (2-3 sentence explanation)
 }
@@ -74,6 +81,10 @@ export class BiasAnalyzer {
           left_right: this.clamp(parsed.left_right ?? 0, -100, 100),
           auth_lib: this.clamp(parsed.auth_lib ?? 0, -100, 100),
           nat_glob: this.clamp(parsed.nat_glob ?? 0, -100, 100),
+          objectivity: this.clamp(parsed.objectivity ?? 50, 0, 100),
+          sensationalism: this.clamp(parsed.sensationalism ?? 50, 0, 100),
+          clarity: this.clamp(parsed.clarity ?? 50, 0, 100),
+          tone_calm_urgent: this.clamp(parsed.tone_calm_urgent ?? 0, -100, 100),
           confidence: this.clamp(parsed.confidence ?? 50, 0, 100),
           reasoning: String(parsed.reasoning ?? 'Analysis unavailable'),
         };
@@ -95,6 +106,10 @@ export class BiasAnalyzer {
       left_right: 0,
       auth_lib: 0,
       nat_glob: 0,
+      objectivity: 50,
+      sensationalism: 50,
+      clarity: 50,
+      tone_calm_urgent: 0,
       confidence: 0,
       reasoning: 'AI analysis unavailable. Add GEMINI_API_KEY to enable.',
     };

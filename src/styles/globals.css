@@ -23,5 +23,5 @@
   transition: transform 0.2s ease;
 }
 .creal-btn-minimize:hover {
-  transform: scale(1.05);
+  transform: scale(1.08);
 }

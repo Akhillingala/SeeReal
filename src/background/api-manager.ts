@@ -3,17 +3,9 @@
  * Coordinates AI analysis requests and caching
  */
 
-import { BiasAnalyzer } from '../lib/analyzers/bias-detector';
+import { BiasAnalyzer, type BiasResult } from '../lib/analyzers/bias-detector';
 
 const biasAnalyzer = new BiasAnalyzer();
-
-interface BiasResult {
-  left_right: number;
-  auth_lib: number;
-  nat_glob: number;
-  confidence: number;
-  reasoning: string;
-}
 
 interface AnalysisResult {
   bias: BiasResult;
