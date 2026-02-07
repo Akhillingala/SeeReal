@@ -107,7 +107,7 @@ class BiasAnalyzer {
             if (fromStorage && typeof fromStorage === 'string')
                 return fromStorage;
             // Fallback: key from .env.local at build time (run: GEMINI_API_KEY=xxx npm run build)
-            const fromEnv =  true ? "AIzaSyDnxOmq0sGW1sDvXTM2hDxUW5kYxkzsnJo" : 0;
+            const fromEnv =  true ? "AIzaSyDU1mV7OfK9JVnsXmTOEpX0LivTdIfFFjo" : 0;
             return fromEnv?.trim() || null;
         }
         catch {

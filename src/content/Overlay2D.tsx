@@ -100,7 +100,7 @@ export function Overlay2D() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             onClick={openOverlay}
-            className="creal-btn-minimize flex h-20 w-20 items-center justify-center rounded-2xl bg-black/75 text-creal-accent shadow-neon backdrop-blur-glass border border-white/25"
+            className="creal-btn-minimize flex h-20 w-20 items-center justify-center rounded-2xl bg-black/95 text-creal-accent shadow-neon backdrop-blur-glass border border-white/25"
             title="CReal - Article insights"
           >
             <svg
@@ -127,7 +127,7 @@ export function Overlay2D() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed left-[12.5vw] top-[12.5vh] z-[2147483647] flex w-[75vw] h-[75vh] flex-col rounded-2xl border border-white/15 bg-black/72 shadow-2xl backdrop-blur-xl"
+            className="fixed left-[12.5vw] top-[12.5vh] z-[2147483647] flex w-[75vw] h-[75vh] flex-col rounded-2xl border border-white/15 bg-black/95 shadow-2xl backdrop-blur-xl"
           >
             {/* Header */}
             <div className="flex shrink-0 items-center justify-between border-b border-white/20 px-6 py-4 bg-white/[0.03]">

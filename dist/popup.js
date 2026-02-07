@@ -804,8 +804,8 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(10 10 20 / var(--tw-bg-opacity, 1));
 }
-.bg-black\\/75 {
-  background-color: rgb(0 0 0 / 0.75);
+.bg-black\\/95 {
+  background-color: rgb(0 0 0 / 0.95);
 }
 .bg-creal-accent {
   --tw-bg-opacity: 1;
@@ -36461,7 +36461,7 @@ function Popup() {
             const key = data[STORAGE_KEY] ?? '';
             setApiKey(key);
             // Key is configured if: saved in storage OR from .env.local at build time
-            const fromEnv =  true && "AIzaSyDnxOmq0sGW1sDvXTM2hDxUW5kYxkzsnJo"?.trim();
+            const fromEnv =  true && "AIzaSyDU1mV7OfK9JVnsXmTOEpX0LivTdIfFFjo"?.trim();
             setHasKey(!!key.trim() || !!fromEnv);
         });
     }, []);
