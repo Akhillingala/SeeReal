@@ -1,61 +1,53 @@
 /**
  * SeeReal - Extension Popup
- * API key configuration and quick actions
+ * Streamlined UI with overlay toggle
  */
-
-declare const __GEMINI_API_KEY_FROM_ENV__: string | undefined;
 
 import React, { useState, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import '../styles/globals.css';
 
-const STORAGE_KEY = 'geminiApiKey';
+const OVERLAY_ENABLED_KEY = 'overlayEnabled';
+
+function ToggleSwitch({ enabled, onChange }: { enabled: boolean; onChange: (v: boolean) => void }) {
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={enabled}
+      onClick={() => onChange(!enabled)}
+      style={{ WebkitAppearance: 'none' }}
+      className={`relative inline-flex h-7 w-14 shrink-0 cursor-pointer items-center rounded-full border-2 transition-all duration-300 focus:outline-none ${enabled ? 'border-yellow-500 bg-yellow-500' : 'border-white/20 bg-white/10'
+        }`}
+    >
+      <span
+        className={`inline-block h-5 w-5 transform rounded-full bg-white shadow-md transition-transform duration-300 ${enabled ? 'translate-x-7' : 'translate-x-0.5'
+          }`}
+      />
+    </button>
+  );
+}
 
 function Popup() {
-  const [apiKey, setApiKey] = useState('');
-  const [hasKey, setHasKey] = useState(false);
-  const [showKeyForm, setShowKeyForm] = useState(false);
-  const [status, setStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
-  const [errorMsg, setErrorMsg] = useState('');
+  const [overlayEnabled, setOverlayEnabled] = useState(true);
 
   useEffect(() => {
-    chrome.storage.local.get(STORAGE_KEY, (data) => {
-      const key = data[STORAGE_KEY] ?? '';
-      setApiKey(key);
-      // Key is configured if: saved in storage OR from .env.local at build time
-      const fromEnv = typeof __GEMINI_API_KEY_FROM_ENV__ !== 'undefined' && __GEMINI_API_KEY_FROM_ENV__?.trim();
-      setHasKey(!!key.trim() || !!fromEnv);
+    chrome.storage.local.get(OVERLAY_ENABLED_KEY, (data) => {
+      setOverlayEnabled(data[OVERLAY_ENABLED_KEY] !== false);
     });
   }, []);
 
-  const handleSave = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const key = apiKey.trim();
-    if (!key) {
-      setStatus('error');
-      setErrorMsg('Please enter an API key.');
-      setTimeout(() => setStatus('idle'), 3000);
-      return;
-    }
-    setStatus('saving');
-    setErrorMsg('');
-    chrome.storage.local.set({ [STORAGE_KEY]: key }, () => {
-      if (chrome.runtime.lastError) {
-        setStatus('error');
-        setErrorMsg(chrome.runtime.lastError?.message ?? 'Failed to save');
-      } else {
-        setStatus('saved');
-        setHasKey(true);
-        setShowKeyForm(false);
+  const handleToggle = (enabled: boolean) => {
+    setOverlayEnabled(enabled);
+    chrome.storage.local.set({ [OVERLAY_ENABLED_KEY]: enabled });
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (tabs[0]?.id) {
+        chrome.tabs.sendMessage(tabs[0].id, { type: 'TOGGLE_OVERLAY', enabled }).catch(() => { });
       }
-      setTimeout(() => setStatus('idle'), 3000);
     });
   };
 
-  const handleAnalyze = async (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const handleAnalyze = async () => {
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     if (tab?.id) {
       chrome.tabs.sendMessage(tab.id, { type: 'RUN_ANALYSIS' });
@@ -63,73 +55,46 @@ function Popup() {
     }
   };
 
-  if (hasKey && !showKeyForm) {
-    return (
-      <div className="w-96 bg-[#0a0a14] p-5 font-sans text-white text-center">
-        <img src={chrome.runtime.getURL('logo.svg')} alt="SeeReal" className="mx-auto mb-5 h-16 w-auto object-contain" />
-        <p className="mb-5 text-base text-white/80">Key configured ✓</p>
+  return (
+    <div className="w-72 bg-[#0a0a14] font-sans text-white">
+      {/* Header */}
+      <div className="flex items-center gap-3 px-4 pt-4 pb-3 border-b border-white/10">
+        <img
+          src={chrome.runtime.getURL('logo.svg')}
+          alt="SeeReal"
+          className="h-8 w-auto object-contain shrink-0"
+        />
+        <div>
+          <p className="text-sm font-bold text-white leading-tight">SeeReal</p>
+          <p className="text-[11px] text-white/40 leading-tight">News Transparency</p>
+        </div>
+      </div>
+
+      {/* Controls */}
+      <div className="px-4 py-3 space-y-2.5">
+        {/* Toggle */}
+        <div className="flex items-center justify-between rounded-xl bg-white/[0.06] border border-white/10 px-4 py-3">
+          <div>
+            <p className="text-sm font-semibold text-white">Corner Widget</p>
+            <p className="text-[11px] text-white/50 mt-0.5">
+              {overlayEnabled ? 'Visible on all pages' : 'Hidden on all pages'}
+            </p>
+          </div>
+          <ToggleSwitch enabled={overlayEnabled} onChange={handleToggle} />
+        </div>
+
+        {/* Analyze button */}
         <button
           type="button"
           onClick={handleAnalyze}
-          className="mb-4 w-full rounded-xl bg-yellow-600 py-3.5 text-base font-semibold text-white hover:bg-yellow-500 transition-colors"
+          className="w-full rounded-xl bg-yellow-600 py-3 text-sm font-semibold text-white hover:bg-yellow-500 transition-colors"
         >
           Analyze this page
         </button>
-        <button
-          type="button"
-          onClick={() => setShowKeyForm(true)}
-          className="w-full rounded-lg bg-white/10 py-2 text-sm text-white/70 hover:bg-white/20 hover:text-white transition-colors"
-        >
-          Change API key
-        </button>
       </div>
-    );
-  }
 
-  return (
-    <div className="w-96 bg-[#0a0a14] p-5 font-sans text-white text-center">
-      <img src={chrome.runtime.getURL('logo.svg')} alt="SeeReal" className="mx-auto mb-5 h-16 w-auto object-contain" />
-      <p className="mb-4 text-base text-white/80">
-        Add your Gemini API key to enable bias analysis:
-      </p>
-      <input
-        type="password"
-        value={apiKey}
-        onChange={(e) => setApiKey(e.target.value)}
-        placeholder="AIza..."
-        className="mb-4 w-full rounded-lg border-2 border-white/20 bg-white/5 px-4 py-3 text-base text-white placeholder-white/40 focus:border-[#FFD700] focus:outline-none"
-      />
-      <button
-        type="button"
-        onClick={handleSave}
-        disabled={status === 'saving'}
-        className="w-full rounded-xl bg-yellow-600 py-3.5 text-base font-semibold text-white hover:bg-yellow-500 disabled:opacity-70 transition-colors"
-      >
-        {status === 'saving' ? 'Saving...' : status === 'saved' ? 'Saved!' : 'Save API Key'}
-      </button>
-      {status === 'error' && (
-        <p className="mt-2 text-xs text-[#FF0055]">{errorMsg}</p>
-      )}
-      <p className="mt-4 text-sm text-white/50">
-        Get your key at{' '}
-        <a
-          href="https://aistudio.google.com/apikey"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-[#FFD700] hover:underline"
-        >
-          Google AI Studio
-        </a>
-      </p>
-      {hasKey && (
-        <button
-          type="button"
-          onClick={() => setShowKeyForm(false)}
-          className="mt-3 w-full rounded-lg bg-white/10 py-2 text-sm text-white/70 hover:bg-white/20 hover:text-white transition-colors"
-        >
-          Cancel
-        </button>
-      )}
+      {/* Footer */}
+      <p className="pb-3 text-center text-[10px] text-white/20">Powered by Gemini AI</p>
     </div>
   );
 }

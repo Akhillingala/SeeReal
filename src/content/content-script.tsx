@@ -10,16 +10,23 @@ import { Overlay2D } from './Overlay2D';
 import '../styles/globals.css';
 
 const OVERLAY_ID = 'seereal-overlay-root';
+const OVERLAY_ENABLED_KEY = 'overlayEnabled';
 
 function init() {
   if (document.getElementById(OVERLAY_ID)) return;
 
-  const container = document.createElement('div');
-  container.id = OVERLAY_ID;
-  document.body.appendChild(container);
+  // Read the saved toggle state before injecting
+  chrome.storage.local.get(OVERLAY_ENABLED_KEY, (data) => {
+    const enabled = data[OVERLAY_ENABLED_KEY] !== false; // default true
 
-  const root = createRoot(container);
-  root.render(<Overlay2D />);
+    const container = document.createElement('div');
+    container.id = OVERLAY_ID;
+    container.style.display = enabled ? '' : 'none';
+    document.body.appendChild(container);
+
+    const root = createRoot(container);
+    root.render(<Overlay2D />);
+  });
 }
 
 if (document.readyState === 'loading') {
@@ -31,6 +38,13 @@ if (document.readyState === 'loading') {
 chrome.runtime.onMessage.addListener((message) => {
   if (message.type === 'RUN_ANALYSIS') {
     document.dispatchEvent(new CustomEvent('seereal-run-analysis'));
+  }
+
+  if (message.type === 'TOGGLE_OVERLAY') {
+    const container = document.getElementById(OVERLAY_ID);
+    if (container) {
+      container.style.display = message.enabled ? '' : 'none';
+    }
   }
 });
 
